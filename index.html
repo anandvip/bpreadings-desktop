@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Blood Pressure Readings</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+
+    </style>
+  </head>
+
+  <body>
+    <header id="masthead">
+      <h1 id="site-title">BP readings</h1>
+      <nav id="main-navigation">
+        <a href="#print-icon" class="">Print Data</a>
+        <a href="#download-link">Download Data</a>
+        <a href="#download-link">Share Data</a>
+      </nav>
+    </header>
+    <div class="layoutwrapper">
+      <section class="wrapper">
+        <div class="box"><span><strong>Name:</strong><span id="person">Vipul Anand</span></span>
+          <span><strong>Contact:</strong> 9896918475</span>
+          <span><strong>Email:</strong> va@vipulannd.in</span>
+          <span><strong>Gender:</strong> Male</span>
+          <span><strong>Age:53</strong></span>
+          <span><strong>weight:</strong>68kg</span>
+          <span><strong>height:</strong>5ft,11.5inches</span>
+        </div>
+        <div class="box">
+          <section>
+            
+          </section>
+ 
+        </div>
+        <div class="box">
+          <div id="chart"></div>
+          <div class="altchart">
+          <button class="btn" id="line">line</button>
+          <button class="btn" id="bar">bar</button>
+          <button class="btn" id="area">area</button>
+        </div>
+        </div>
+        <div class="box form">
+          <form>
+            <h4>add readings here</h4>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required />
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required />
+            <label for="systolic">Systolic:</label>
+            <input type="number" id="systolic" name="systolic" required />
+            <label for="diastolic">Diastolic:</label>
+            <input type="number" id="diastolic" name="diastolic" required />
+            <label for="heartRate">Heart Rate:</label>
+            <input type="number" id="heartRate" name="heartRate" required />
+            <input type="submit" class="custom-btn btn-5" value="Add Reading" />
+          </form>
+        </div>
+      </section>
+      <strong>
+        <sup id="targetsystolicAvg">target Systolic Average was:128</sup>
+      </strong>
+      <div class="container">
+
+        <div class="panel sys">
+          <a href="javascript:void();"><span id="systolicAvg">124</span>Systolic Avg <sub>mmHG</sub> </a>
+        </div>
+        <div class="panel dia">
+          <a href="javascript:void();"><span id="diastolicAvg">87 </span>Diastolic Avg <sub>mmHG</sub></a>
+        </div>
+        <div class="panel puls">
+          <a href="javascript:void();"><span id="heartRateAvg">86 </span>Pulse Avg</a>
+        </div>
+        <div class="panel count">
+          <a href="#view-readings"><span id="numCells">68 </span>Readings</a>
+        </div>
+        <div class="panel variancesys sysdev">
+          <a href="javascript:void();"><span id="stddevsys">68 </span><sup>mmHG</sup> stddev systolic</a>
+        </div>
+        <div class="panel variancedia dia">
+          <a href="javascript:void();"><span id="stddevDia"></span><sup>mmHG</sup> stddev diastolic</a>
+        </div>
+      </div>
+      <section class="wrapper2">
+        <div class="box2">
+          <div class="chart-container chart">
+            <canvas class="chart" id="mybpchart" width="900" height="750"></canvas>
+          </div>
+        </div>
+        <!-- <div class="box2">
+            
+          </div> -->
+      </section>
+    </div>
+
+    <!-- <section class="avg">
+        <strong>
+          <sup>target heart Rate Avg:75</sup>
+          <p>Heart Rate Average: <span></span></p>
+        </strong>
+
+        <strong>
+          <sup id="targetsystolicAvg">target Systolic Average:128</sup>
+          <p>Systolic Average: <span></span></p>
+        </strong>
+        <strong>
+          <sup>target Diastolic Average:90</sup>
+          <p>Diastolic Average: <span></span></p>
+        </strong>
+        <strong>
+          <sup><i>Breath techniques and satvik program 3months</i></sup>
+          <p>Number of readings: <span></span></p>
+        </strong>
+      </section> -->
+    <sup>
+      <span>with patience and practice the watcher becomes stronger and mind
+        becomes weaker leading to a state of no mind where true self
+        realization super conciousness can be experienced making it the most
+        profound experience in life.
+      </span>
+    </sup>
+    </header>
+
+
+
+    <table id="view-readings">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Systolic</th>
+          <th>Diastolic</th>
+          <th>Heart Rate</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="readings">
+        <!-- Readings will be added here dynamically -->
+      </tbody>
+    </table>
+
+
+    <div class="btotop"> 
+      <svg viewBox="0 0 512 512" width="30" title="arrow-alt-circle-up">
+        <path d="M8 256C8 119 119 8 256 8s248 111 248 248-111 248-248 248S8 393 8 256zm292 116V256h70.9c10.7 0 16.1-13 8.5-20.5L264.5 121.2c-4.7-4.7-12.2-4.7-16.9 0l-115 114.3c-7.6 7.6-2.2 20.5 8.5 20.5H212v116c0 6.6 5.4 12 12 12h64c6.6 0 12-5.4 12-12z" />
+      </svg>
+    </div>
+    <details>
+      <button id="print-icon" alt="print this data"></button>
+      <summary>Print this data.</summary>
+    </details>
+    <details>
+      <p>
+        <strong>latest downloadable readings for medical reference</strong>
+        <a id="download-link" href="">here</a>
+        <a href="https://jsonformatter.org/json-parser" target="_blank">formatter for this data</a>
+      </p>
+      <summary>download readings data</summary>
+    </details>
+    <script src="js/downloadjson.js"></script>
+    <script src="js/tablesorting.js"></script>
+    <script src="js/avg2.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/readingcolor.js"></script>
+    <script src="js/bpchart.js"></script>
+    <script src="js/avgbpchart.js"></script>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.0/Chart.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/standarddeviation.js"></script>
+
+    <!--download-json-blob and update link in document-->
+<script>
+  // Get the element with class "btotop"
+const btotop = document.querySelector('.btotop');
+
+// Add a click event listener to the element
+btotop.addEventListener('click', function() {
+  // Redirect to the URL specified in the href attribute
+  location.href = '#masthead';
+});
+
+</script>
+    <script>
+      // Retrieve data from local storage or initialize empty array
+      var readings = JSON.parse(localStorage.getItem("readings")) || [];
+
+      // Convert readings to JSON string
+      var jsonString = JSON.stringify(readings);
+      // console.log(jsonString);
+      // Create Blob
+      var blob = new Blob([jsonString], {type: "application/json"});
+
+      // Create URL
+      var url = URL.createObjectURL(blob);
+
+      // Get existing anchor element or create new one
+      var a = document.getElementById("download-link");
+      if (!a) {
+        a = document.createElement("a");
+        a.id = "download-link";
+        a.className = "json";
+        var container = document.getElementById("container");
+        container.appendChild(a);
+      }
+
+      // Set attributes
+      a.href = url;
+      a.download = "readings.json";
+      // a.textContent = "Download readings";
+      a.innerHTML = `<img class="json" src="images/JSONDNLD.png" alt="download json readings"> <span>download readings</span>`;
+    </script>
+    <!-- //table folding for large scrolling starts here -->
+    <script>
+      //limit displayed results
+      // Get the table body element
+      const tableBody = document.getElementById("readings");
+
+      // Get the table rows
+      const tableRows = tableBody.querySelectorAll("tr");
+
+      // Set the number of readings to display initially
+      let displayedReadings = 20;
+
+      // Loop through the rows and hide the ones that exceed the displayed readings
+      tableRows.forEach((row, index) => {
+        if (index >= displayedReadings) {
+          row.style.display = "none";
+        }
+      });
+
+      // Create a load more button and add it to the bottom of the table
+      const loadMoreButton = document.createElement("button");
+      loadMoreButton.innerText = `Show ${tableRows.length - displayedReadings
+        } More`;
+      loadMoreButton.className = "custom-btn btn-5";
+      loadMoreButton.addEventListener("click", () => {
+        // Increase the number of displayed readings by 20
+        displayedReadings += 20;
+
+        // Loop through the rows and show the ones that fall within the displayed readings
+        tableRows.forEach((row, index) => {
+          if (index < displayedReadings) {
+            row.style.display = "";
+          }
+        });
+
+        // Hide the load more button if all readings have been displayed
+        if (displayedReadings >= tableRows.length) {
+          loadMoreButton.style.display = "none";
+        }
+      });
+
+      // Add the load more button to the table
+      tableBody.parentElement.appendChild(loadMoreButton);
+    </script>
+    <!--chrome notifications start here. -->
+    <script>
+      if ("Notification" in window) {
+        // Notification API is supported
+      }
+      if ("Notification" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            // show notification
+          }
+        });
+      }
+      if ("Notification" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            var notification = new Notification("BP app ready", {
+              body: "ready for new bp reading to be added",
+              icon: "images/icon3.png"
+            });
+            setTimeout(notification.close.bind(notification), 3000); //auto close after 3seconds
+          }
+        });
+      }
+    </script>
+    <!-- sorting data by time of the day following MNEN[morning,noon,evening,Night] -->
+    <script>
+      // Define the time ranges for the four categories
+      var morningRange = ["06:00:00", "11:59:59"];
+      var afternoonRange = ["12:00:00", "17:59:59"];
+      var eveningRange = ["18:00:00", "20:59:59"];
+      var nightRange = ["20:59:00", "05:59:59"];
+
+      // Create four arrays to hold the readings for each time range
+      var morningReadings = [];
+      var afternoonReadings = [];
+      var eveningReadings = [];
+      var nightReadings = [];
+
+      // Loop through the readings and group them into the four arrays based on their time
+      for (var i = 0; i < readings.length; i++) {
+        var time = readings[i].time;
+        var hour = parseInt(time.substr(0, 2));
+        if (hour >= 6 && hour <= 11) {
+          morningReadings.push(readings[i]);
+          console.log(morningReadings);
+        } else if (hour >= 12 && hour <= 16) {
+          afternoonReadings.push(readings[i]);
+        } else if (hour >= 18 && hour <= 20) {
+          eveningReadings.push(readings[i]);
+        } else {
+          nightReadings.push(readings[i]);
+        }
+      }
+      console.log("Morning Readings: ", morningReadings);
+      console.log("Afternoon Readings: ", afternoonReadings);
+      console.log("Evening Readings: ", eveningReadings);
+      console.log("Night Readings: ", nightReadings);
+    </script>
+
+    <!-- zingchart code begin zingchart code begin zingchart code begin zingchart code begin zingchart code begin zingchart code begin -->
+    <!-- sorting readings buy time of the day and keeping it ready for the zingchart context -->
+    <script>
+      var readings = JSON.parse(localStorage.getItem("readings")) || [];
+      // Define the time ranges for the four categories
+      var morningRange = ["06:00:00", "11:59:59"];
+      var afternoonRange = ["12:00:00", "17:59:59"];
+      var eveningRange = ["18:00:00", "20:59:59"];
+      var nightRange = ["20:59:00", "05:59:59"];
+
+      // Create four arrays to hold the readings for each time range
+      var morningReadings = [];
+      var afternoonReadings = [];
+      var eveningReadings = [];
+      var nightReadings = [];
+
+      // Loop through the readings and group them into the four arrays based on their time
+      for (var i = 0; i < readings.length; i++) {
+        var time = readings[i].time;
+        var hour = parseInt(time.substr(0, 2));
+        if (hour >= 6 && hour <= 11) {
+          morningReadings.push(readings[i]);
+          console.log(morningReadings);
+        } else if (hour >= 12 && hour <= 16) {
+          afternoonReadings.push(readings[i]);
+        } else if (hour >= 18 && hour <= 20) {
+          eveningReadings.push(readings[i]);
+        } else {
+          nightReadings.push(readings[i]);
+        }
+      }
+      console.log("Morning Readings: ", morningReadings);
+      console.log("Afternoon Readings: ", afternoonReadings);
+      console.log("Evening Readings: ", eveningReadings);
+      console.log("Night Readings: ", nightReadings);
+
+      const systolicData = readings.map((obj) => parseInt(obj.systolic));
+      console.log(`entire data is here:${systolicData}`);
+      var systolicM = morningReadings.map((obj) => parseInt(obj.systolic));
+      console.log(`Morning data: ${systolicM}`);
+      var systolicA = afternoonReadings.map((obj) => parseInt(obj.systolic));
+      console.log(`afternoon data is here: ${systolicA}`);
+      var systolicE = eveningReadings.map((obj) => parseInt(obj.systolic));
+      console.log(`evening data is here: ${systolicE}`);
+      var systolicN = nightReadings.map((obj) => parseInt(obj.systolic));
+      console.log(`night data is here: ${systolicN}`);
+    </script>
+    <!-- zingchart js -->
+    <script>
+      // Get the readings data from local storage
+      var bpreadings = JSON.parse(localStorage.getItem("readings")) || [];
+      console.log(bpreadings);
+      // Create empty arrays for the morning, afternoon, evening, and night readings
+      var morningReadings = [];
+      var afternoonReadings = [].reverse();
+      var eveningReadings = [];
+      var nightReadings = [];
+      // console.log(`night reading are: ${nightReadings}`);
+      // Define the time ranges for the four categories
+      var morningRange = ["06:00:00", "11:59:59"];
+      var afternoonRange = ["12:00:00", "17:59:59"];
+      var eveningRange = ["18:00:00", "20:59:59"];
+      var nightRange = ["20:59:00", "05:59:59"];
+
+      // Create four arrays to hold the readings for each time range
+      var morningReadings = [].reverse();
+      var afternoonReadings = [].reverse();
+      var eveningReadings = [].reverse();
+      var nightReadings = [].reverse();
+
+      // Loop through the readings and group them into the four arrays based on their time
+      for (var i = 0; i < readings.length; i++) {
+        var time = readings[i].time;
+        var hour = parseInt(time.substr(0, 2));
+        if (hour >= 6 && hour <= 11) {
+          morningReadings.push(readings[i]);
+          console.log(morningReadings);
+        } else if (hour >= 12 && hour <= 16) {
+          afternoonReadings.push(readings[i]);
+        } else if (hour >= 18 && hour <= 20) {
+          eveningReadings.push(readings[i]);
+        } else {
+          nightReadings.push(readings[i]);
+        }
+      }
+      console.log("Morning Readings: ", morningReadings);
+      console.log("Afternoon Readings: ", afternoonReadings);
+      console.log("Evening Readings: ", eveningReadings);
+      console.log("Night Readings: ", nightReadings);
+      // Loop through the bpreadings array and add each reading to the appropriate array
+      for (var i = 0; i < bpreadings.length; i++) {
+        var reading = bpreadings[i];
+        var time = parseInt(reading.time.replace(":", ""));
+
+        if (time >= 600 && time < 1200) {
+          morningReadings.push(reading.sys);
+        } else if (time >= 1200 && time < 1800) {
+          afternoonReadings.push(reading.sys);
+        } else if (time >= 1800 && time < 2200) {
+          eveningReadings.push(reading.sys);
+        } else {
+          nightReadings.push(reading.sys);
+        }
+      }
+
+      // Populate the chartData object with the readings data
+      var chartData = {
+        type: "hbar", // 'line', 'area','bar',hbar[horizontal bars]
+        title: {
+          text: "systolic bp chart pattern"
+        },
+        legend: {
+          header: {
+            text: "vipul's BPreadings"
+          },
+          layout: "1x4", //row x column
+          x: "10%",
+          y: "8%",
+          draggable: true
+        },
+        plot: {
+          animation: {
+            effect: 3,
+            method: "5",
+            speed: "500",
+            sequence: "1"
+          }
+        },
+        scaleX: {
+          values: ["morning", "noon", "evening", "night"]
+        },
+        series: [
+          {
+            values: systolicM.reverse(),
+            text: "Morning",
+            "background-color": "#f44336"
+          },
+          {
+            values: systolicA.reverse(),
+            text: "Noon",
+            "background-color": "#9c27b0"
+    
+          },
+          {
+            values: systolicE,
+            text: "Evening",
+            "background-color": "#3f51b5"
+          },
+          {
+            values: systolicN,
+            text: "Night",
+            "background-color": "#009688"
+          }
+        ]
+      };
+
+      zingchart.render({
+        id: "chart",
+        data: chartData,
+        height: 400,
+        width: 400
+      });
+      //buttons for changing the chart type in DOM.
+      var lineButton = document.getElementById("line");
+      var barButton = document.getElementById("bar");
+      var areaButton = document.getElementById("area");
+
+      lineButton.addEventListener("click", function () {
+        chartData.type = "line"; // Change the chart type in the chartData object
+        zingchart.exec("chart", "setdata", {
+          // Set the updated chart data
+          data: chartData
+        });
+      });
+
+      barButton.addEventListener("click", function () {
+        chartData.type = "bar"; // Change the chart type in the chartData object
+        zingchart.exec("chart", "setdata", {
+          // Set the updated chart data
+          data: chartData
+        });
+      });
+
+      areaButton.addEventListener("click", function () {
+        chartData.type = "area"; // Change the chart type in the chartData object
+        zingchart.exec("chart", "setdata", {
+          // Set the updated chart data
+          data: chartData
+        });
+      });
+
+      const readingsData = localStorage.getItem("readings");
+      console.log(readingsData);
+    </script>
+   
+<script>
+  function calculateStatistics() {
+  let systolicSum = 0;
+  let diastolicSum = 0;
+  let systolicMean = 0;
+  let diastolicMean = 0;
+  let systolicVariance = 0;
+  let diastolicVariance = 0;
+  let systolicStdDev = 0;
+  let diastolicStdDev = 0;
+  
+  const myreadings = JSON.parse(localStorage.getItem("readings"));
+console.log(`coming from std deviation script:${myreadings}`);
+  //Calculate sum of systolic and diastolic readings
+  myreadings.forEach((reading) => {
+    systolicSum += Number(reading.systolic);
+    diastolicSum += Number(reading.diastolic);
+  });
+
+  //Calculate mean of systolic and diastolic readings
+  systolicMean = systolicSum / myreadings.length;
+  diastolicMean = diastolicSum / myreadings.length;
+
+  //Calculate variance of systolic and diastolic readings
+  myreadings.forEach((reading) => {
+    systolicVariance += Math.pow(Number(reading.systolic) - systolicMean, 2);
+    diastolicVariance += Math.pow(Number(reading.diastolic) - diastolicMean, 2);
+  });
+  systolicVariance /= myreadings.length;
+  diastolicVariance /= myreadings.length;
+
+  //Calculate standard deviation of systolic and diastolic readings
+  systolicStdDev = Math.sqrt(systolicVariance);
+  diastolicStdDev = Math.sqrt(diastolicVariance);
+
+  console.log("systolicMean: " + systolicMean);
+  console.log("diastolicMean: " + diastolicMean);
+  console.log("systolicVariance: " + systolicVariance);
+  console.log("diastolicVariance: " + diastolicVariance);
+  console.log("systolicStdDev: " + systolicStdDev);
+  console.log("diastolicStdDev: " + diastolicStdDev);
+  console.log(document.getElementById("stddevsys").textContent);
+  console.log(document.getElementById("stddevDia").textContent);
+  document.getElementById("stddevsys").innerText = systolicStdDev.toFixed(2);
+document.getElementById("stddevDia").innerText = diastolicStdDev.toFixed(2);
+}
+calculateStatistics()
+
+</script>
+  </body>
+
+</html>
