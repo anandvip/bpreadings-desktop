@@ -357,7 +357,7 @@ body {
 .wrapper {
   display: grid;
   gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   color: #131313;
 }
 .box {
