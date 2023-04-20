@@ -3,6 +3,7 @@ var table = document.getElementById("readings");
 var patient = document.getElementById("person");
 var feedback = document.getElementById("about");
 console.log(patient.textContent);
+console.log(feedback.textContent);
 // Request permission to show notifications
 Notification.requestPermission();
 
