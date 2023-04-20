@@ -1,6 +1,7 @@
 var readings = JSON.parse(localStorage.getItem("readings")) || [];
 var table = document.getElementById("readings");
 var patient = document.getElementById("person");
+var feedback = document.getElementById("about");
 console.log(patient.textContent);
 // Request permission to show notifications
 Notification.requestPermission();
@@ -28,7 +29,8 @@ for (var i = 0; i < readings.length; i++) {
   timeCell.innerHTML = reading.time;
   systolicCell.innerHTML = reading.systolic;
   if (reading.systolic > 140) {
-    patient.textContent="Vipul Anand"
+    patient.textContent="Developer of this app: Vipul Anand";
+    feedback.textContent="you have suugestions for features improvement whatsapp me @ 9896918475 or if you can email i am available here va@vipulanand.in"
     systolicCell.parentElement.classList.add("red");
   }
   diastolicCell.innerHTML = reading.diastolic;
