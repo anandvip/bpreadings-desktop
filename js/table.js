@@ -6,7 +6,7 @@ console.log(patient.textContent);
 console.log(feedback.textContent);
 if (patient&&feedback) {
   patient.textContent="Your Name ";
-  feedback.textContent="you have suggestions for features improvement whatsapp me @ 9896918475 or if you can email i am available here va@vipulanand.in"
+  feedback.textContent="you have suggestions for features improvement whatsapp me @ 9896918475 or if you can email i am available here 9896918475v@gmail.com"
 }
 // Request permission to show notifications
 Notification.requestPermission();
